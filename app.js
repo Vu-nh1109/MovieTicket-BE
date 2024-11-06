@@ -8,28 +8,28 @@ app.use(cors());
 app.use(express.json());
 
 const customerRouter = require("./routes/customerRoute");
-app.use("/", customerRouter);
+app.use("/customers/", customerRouter);
 
 const cinemaRouter = require("./routes/cinemaRoute");
-app.use("/", cinemaRouter);
+app.use("/cinemas/", cinemaRouter);
 
 const hallRouter = require("./routes/hallRoute");
-app.use("/", hallRouter);
+app.use("/halls/", hallRouter);
 
 const movieRouter = require("./routes/movieRoute");
-app.use("/", movieRouter);
+app.use("/movies/", movieRouter);
 
 const paymentRouter = require("./routes/paymentRoute");
-app.use("/", paymentRouter);
+app.use("/payments/", paymentRouter);
 
 const seatRouter = require("./routes/seatRoute");
-app.use("/", seatRouter);
+app.use("/seats/", seatRouter);
 
 const showtimeRouter = require("./routes/showtimeRoute");
-app.use("/", showtimeRouter);
+app.use("/showtimes/", showtimeRouter);
 
 const ticketRouter = require("./routes/ticketRoute");
-app.use("/", ticketRouter);
+app.use("/tickets/", ticketRouter);
 
 app.listen(3001, () => {
     console.log("System is running on port 3001");
