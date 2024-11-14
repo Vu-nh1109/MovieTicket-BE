@@ -6,7 +6,11 @@ const movieSchema = new mongoose.Schema({
     duration: { type: Number, required: true },
     genre: { type: [String], required: true },
     release_date: { type: Date, required: true },
-    image_url: { type: String }
+    image_url: { type: String },
+    actor: { type: [String], required: true },
+    director: { type: String, required: true },
+    rated: { type: String, required: true },
+    trailer_url: {type: String}
 });
 
 module.exports = mongoose.model('Movie', movieSchema);
