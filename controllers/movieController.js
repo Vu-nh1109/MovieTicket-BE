@@ -63,3 +63,23 @@ exports.deleteMovie = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 };
+
+exports.getMoviesNowShowing = async (req, res) => {
+    try {
+        const page = parseInt(req.query.page, 10) || 1;
+        const limit = parseInt(req.query.limit, 10) || 10;
+
+        const movies = await movieService.getMoviesNowShowing(page, limit);
+
+        res.status(200).json({
+            code: 200,
+            message: "Thành công",
+            data: movies
+        });
+    } catch (err) {
+        res.status(500).json({
+            code: 500,
+            message: `Thất bại: ${err.message}`
+        });
+    }
+};
