@@ -63,3 +63,15 @@ exports.deleteShowtime = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 };
+
+exports.getMovieShowtimes = async (req, res) => {
+    const { idmovies, location, date } = req.query;
+
+    try {
+        const data = await showtimeService.getMovieShowtimes(idmovies, location, date);
+        res.status(200).json({ code: 200, message: "Thành công", data });
+    } catch (error) {
+        res.status(400).json({ code: 400, message: "Thất bại", error: error.message });
+    }
+};
+

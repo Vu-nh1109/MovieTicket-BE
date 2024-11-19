@@ -77,3 +77,29 @@ exports.deleteSeat = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 };
+
+exports.getSeatStatus = async (req, res) => {
+    try {
+        const { idshowtimes } = req.query;
+
+        if (!idshowtimes) {
+            return res.status(400).json({
+                code: 400,
+                message: "Thất bại: Thiếu idshowtimes"
+            });
+        }
+
+        const result = await seatService.getSeatStatus(idshowtimes);
+
+        res.status(200).json({
+            code: 200,
+            message: "Thành công",
+            data: result
+        });
+    } catch (err) {
+        res.status(500).json({
+            code: 500,
+            message: `Thất bại: ${err.message}`
+        });
+    }
+};

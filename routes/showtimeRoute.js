@@ -17,4 +17,6 @@ router.put('/:id', showtimeController.updateShowtime);
 // Route xóa suất chiếu
 router.delete('/:id', showtimeController.deleteShowtime);
 
+router.get('/', showtimeController.getMovieShowtimes);
+
 module.exports = router;

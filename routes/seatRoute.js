@@ -17,4 +17,7 @@ router.put('/:id', seatController.updateSeat);
 // Route xóa ghế
 router.delete('/:id', seatController.deleteSeat);
 
+// Route lấy seat status
+router.get('/seatstatus', seatController.getSeatStatus);
+
 module.exports = router;
