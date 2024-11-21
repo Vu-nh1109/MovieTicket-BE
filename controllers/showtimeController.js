@@ -75,3 +75,19 @@ exports.getMovieShowtimes = async (req, res) => {
     }
 };
 
+exports.getSeatStatus = async (req, res) => {
+    try {
+        const result = await showtimeService.getSeatStatus(req.params.id);
+
+        res.status(200).json({
+            code: 200,
+            message: "Thành công",
+            data: result
+        });
+    } catch (err) {
+        res.status(500).json({
+            code: 500,
+            message: `Thất bại: ${err.message}`
+        });
+    }
+};

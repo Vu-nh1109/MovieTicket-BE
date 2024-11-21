@@ -31,6 +31,9 @@ app.use("/showtimes/", showtimeRouter);
 const ticketRouter = require("./routes/ticketRoute");
 app.use("/tickets/", ticketRouter);
 
+const generalRouter = require("./routes/generalRoute");
+app.use("/", generalRouter);
+
 module.exports = app;
 
 const mongoose = require("mongoose");

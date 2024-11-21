@@ -17,8 +17,5 @@ router.put('/:id', movieController.updateMovie);
 // Route xóa phim
 router.delete('/:id', movieController.deleteMovie);
 
-// Route for fetching now-showing movies
-router.get('/nowshowing', movieController.getMoviesNowShowing);
-
 module.exports = router;
 

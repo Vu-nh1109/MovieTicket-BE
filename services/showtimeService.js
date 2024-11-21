@@ -106,3 +106,15 @@ exports.getMovieShowtimes = async (idmovies, location, date) => {
     };
 };
 
+exports.getSeatStatus = async (idshowtimes) => {
+    // Fetch booked seats for the given showtime
+    const seats = await SeatModel.find({ 
+        showtime_id: idshowtimes, 
+        status: "booked" 
+    });
+
+    // Extract seat numbers
+    const bookedSeats = seats.map(seat => seat.seat_number);
+
+    return { idshowtimes, bookedSeats };
+};
