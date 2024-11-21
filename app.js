@@ -31,9 +31,6 @@ app.use("/showtimes/", showtimeRouter);
 const ticketRouter = require("./routes/ticketRoute");
 app.use("/tickets/", ticketRouter);
 
-const port = process.env.PORT || 3001; 
-app.listen(port, () => { console.log(`System is running on port ${port}`); });
-
 module.exports = app;
 
 const mongoose = require("mongoose");
