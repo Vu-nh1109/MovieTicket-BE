@@ -1,6 +1,5 @@
 const paymentService = require('../services/paymentService');
 
-// Tạo thanh toán mới
 exports.createPayment = async (req, res) => {
     try {
         const payment = await paymentService.createPayment(req.body);
@@ -11,7 +10,6 @@ exports.createPayment = async (req, res) => {
     }
 };
 
-// Lấy danh sách tất cả các thanh toán
 exports.getAllPayments = async (req, res) => {
     try {
         const payments = await paymentService.getAllPayments();
@@ -22,7 +20,6 @@ exports.getAllPayments = async (req, res) => {
     }
 };
 
-// Lấy thanh toán theo ID
 exports.getPaymentById = async (req, res) => {
     try {
         const payment = await paymentService.getPaymentById(req.params.id);
@@ -36,7 +33,6 @@ exports.getPaymentById = async (req, res) => {
     }
 };
 
-// Cập nhật thông tin thanh toán
 exports.updatePayment = async (req, res) => {
     try {
         const payment = await paymentService.updatePayment(req.params.id, req.body);
@@ -50,7 +46,6 @@ exports.updatePayment = async (req, res) => {
     }
 };
 
-// Xóa thanh toán
 exports.deletePayment = async (req, res) => {
     try {
         const payment = await paymentService.deletePayment(req.params.id);
@@ -61,5 +56,59 @@ exports.deletePayment = async (req, res) => {
         res.json({ data: payment, status: "deleted" });
     } catch (err) {
         res.status(500).json({ error: err.message });
+    }
+};
+
+exports.createPayment = async (req, res) => {
+    const { amount, returnUrl, paymentMethod, idshowtimes, idcustomers, seatsByType } = req.body;
+
+    try {
+        const showtimeData = await ShowtimeModel.findById(idshowtimes).populate('movie_id hall_id');
+        const customerData = await CustomerModel.findById(idcustomers);
+        const seats = await SeatModel.find({
+            showtime_id: idshowtimes,
+            seat_number: { $in: Object.values(seatsByType).flat() }
+        });
+
+        if (!showtimeData || !customerData || seats.length === 0) {
+            return res.status(400).json({
+                code: 400,
+                message: 'Invalid data: One or more records not found.'
+            });
+        }
+
+        const orderInfo = `${showtimeData.movie_id.title}, ${showtimeData.hall_id.name}, ${showtimeData.hall_id.cinema_id.name}, ${customerData.name}, Start: ${showtimeData.start_time}, End: ${showtimeData.end_time}, Seats: ${JSON.stringify(seats.map(seat => seat.seat_number))}`;
+
+        const orderId = `CGV${new Date().toISOString().replace(/[^0-9]/g, '').slice(0, 14)}`;
+        const orderData = {
+            requestId: orderId,
+            amount,
+            orderInfo,
+            returnUrl,
+        };
+
+        let paymentLink;
+        if (paymentMethod === "momo") {
+            paymentLink = await paymentService.createPaymentLink(orderData);
+        } else {
+            return res.status(400).json({
+                code: 400,
+                message: "Unsupported payment method"
+            });
+        }
+
+        res.status(200).json({
+            code: 200,
+            message: 'Payment link created successfully',
+            data: {
+                orderId,
+                payUrl: paymentLink.payUrl,
+            },
+        });
+    } catch (err) {
+        res.status(500).json({
+            code: 500,
+            message: `Payment link creation failed: ${err.message}`,
+        });
     }
 };

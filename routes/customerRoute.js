@@ -17,4 +17,8 @@ router.put('/:id', customerController.updateCustomer);
 // Route xóa khách hàng
 router.delete('/:id', customerController.deleteCustomer);
 
+router.post('/register', customerController.registerCustomer);
+
+router.post('/login', customerController.loginUser);
+
 module.exports = router;

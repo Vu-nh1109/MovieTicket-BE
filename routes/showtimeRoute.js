@@ -9,6 +9,9 @@ router.post('/', showtimeController.createShowtime);
 // Route lấy tất cả các suất chiếu
 //router.get('/', showtimeController.getAllShowtimes);
 
+// Route lấy seat status
+router.get('/:id/seatstatus', showtimeController.getSeatStatus);
+
 // Route lấy suất chiếu theo ID
 router.get('/:id', showtimeController.getShowtimeById);
 
@@ -20,7 +23,6 @@ router.delete('/:id', showtimeController.deleteShowtime);
 
 router.get('/', showtimeController.getMovieShowtimes);
 
-// Route lấy seat status
-router.get('/:id/seatstatus', showtimeController.getSeatStatus);
+
 
 module.exports = router;

@@ -9,4 +9,7 @@ const ticketSchema = new mongoose.Schema({
     payment_status: { type: String, default: 'pending' } // pending, paid, etc.
 });
 
-module.exports = mongoose.model('Ticket', ticketSchema);
+const Ticket = mongoose.models.Ticket || mongoose.model('Ticket', ticketSchema);
+
+module.exports = Ticket;
+//module.exports = mongoose.model('Ticket', ticketSchema);

@@ -63,3 +63,40 @@ exports.deleteCustomer = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 };
+
+exports.registerCustomer = async (req, res) => {
+    try {
+        const { name, email, phone, password } = req.body;
+
+        const customer = await customerService.registerCustomer({ name, email, phone, password });
+
+        res.status(200).json({
+            code: 200,
+            message: "Thành công",
+            user: customer 
+        });
+    } catch (err) {
+        res.status(400).json({
+            code: 400,
+            message: err.message
+        });
+    }
+};
+
+exports.loginUser = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        const token = await customerService.loginCustomer({ email, password });
+
+        res.status(200).json({
+            code: 200,
+            token: token
+        });
+    } catch (err) {
+        res.status(401).json({
+            code: 401,
+            error: "Invalid credentials"
+        });
+    }
+};
