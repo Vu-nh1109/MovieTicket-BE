@@ -38,7 +38,7 @@ app.listen(3001, () => {
     console.log("System is running on port 3001");
 });
 
-//module.exports = app;
+module.exports = app;
 
 const mongoose = require("mongoose");
 dotenv.config();

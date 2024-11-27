@@ -71,11 +71,11 @@ exports.getMovieShowtimes = async (idmovies, location, date) => {
                         const seatsAvailable = totalSeats - bookedSeats;
 
                         return {
-                            idhalls: showtime.hall_id._id,
+                            idhall: showtime.hall_id._id,
                             name: showtime.hall_id.name,
                             showtimes: [
                                 {
-                                    idshowtimes: showtime._id,
+                                    idshowtime: showtime._id,
                                     start_time: showtime.start_time,
                                     end_time: showtime.end_time,
                                     seatsAvailable,
@@ -88,14 +88,14 @@ exports.getMovieShowtimes = async (idmovies, location, date) => {
             );
 
             return halls.length
-                ? { idcinemas: cinema._id, name: cinema.name, address: cinema.address, hall: halls }
+                ? { idcinema: cinema._id, name: cinema.name, address: cinema.address, hall: halls }
                 : null;
         })
     );
 
     return {
-        idmovies,
-        name: movie.title,
+        idmovie: idmovies,
+        title: movie.title,
         date,
         cinemas: data.filter((cinema) => cinema !== null),
     };
