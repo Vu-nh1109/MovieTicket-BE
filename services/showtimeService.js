@@ -88,7 +88,7 @@ exports.getMovieShowtimes = async (idmovies, location, date) => {
             );
 
             return halls.length
-                ? { idcinema: cinema._id, name: cinema.name, address: cinema.address, hall: halls }
+                ? { idcinema: cinema._id, name: cinema.name, address: cinema.address, halls: halls }
                 : null;
         })
     );

@@ -34,9 +34,11 @@ app.use("/tickets/", ticketRouter);
 const generalRouter = require("./routes/generalRoute");
 app.use("/", generalRouter);
 
+/*
 app.listen(3001, () => {
     console.log("System is running on port 3001");
 });
+*/
 
 module.exports = app;
 
