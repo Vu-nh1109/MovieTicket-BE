@@ -77,3 +77,17 @@ exports.deleteTicket = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 };
+
+// Lấy vé theo customer ID
+exports.getTicketByCustomerId = async (req, res) => {
+    try {
+        const ticket = await ticketService.getTicketByCustomerId(req.params.customerId);
+        if (!ticket) {
+            return res.status(404).json({ error: "Ticket not found" });
+        }
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.json({ data: ticket, status: "success" });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};

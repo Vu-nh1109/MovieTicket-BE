@@ -17,6 +17,10 @@ router.put('/:id', paymentController.updatePayment);
 // Route xóa thanh toán
 router.delete('/:id', paymentController.deletePayment);
 
-router.post('/momo', paymentController.createPayment);
+// Route tạo thanh toán ZaloPay
+router.post('/zalopay', paymentController.createZaloPayPayment);
+
+// Route callback từ ZaloPay
+router.post('/zalopay-callback', paymentController.zaloPayCallback);
 
 module.exports = router;

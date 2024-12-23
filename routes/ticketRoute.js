@@ -8,6 +8,9 @@ router.post('/', ticketController.createTicket);
 // Route lấy tất cả các vé
 router.get('/', ticketController.getAllTickets);
 
+// Route lấy vé theo customerId
+router.get('/customer/:customerId', ticketController.getTicketByCustomerId);
+
 // Route lấy vé theo ID
 router.get('/:id', ticketController.getTicketById);
 
@@ -19,5 +22,7 @@ router.patch('/:id/payment-status', ticketController.updatePaymentStatus);
 
 // Route xóa vé
 router.delete('/:id', ticketController.deleteTicket);
+
+
 
 module.exports = router;

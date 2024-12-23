@@ -35,3 +35,16 @@ exports.updatePaymentStatus = async (id, payment_status) => {
 exports.deleteTicket = async (id) => {
     return await TicketModel.findByIdAndDelete(id);
 };
+
+// Lấy vé theo customerId
+exports.getTicketByCustomerId = async (customerId) => {
+    return await TicketModel.find({ customer_id: customerId })
+        .sort({ booking_date: -1 }) // Sắp xếp từ mới nhất đến cũ nhất
+        .populate('showtime_id')
+        .populate({
+            path: 'showtime_id',
+            populate: {
+                path: 'movie_id'
+            }
+        });
+};
