@@ -66,5 +66,8 @@ exports.loginCustomer = async ({ email, password }) => {
         { expiresIn: '7d' } 
     );
 
-    return token;
+    return {
+        token,
+        customer_name: customer.name,
+    };
 };

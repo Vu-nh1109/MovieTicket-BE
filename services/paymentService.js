@@ -86,7 +86,7 @@ exports.createZaloPayPayment = async (paymentDetails) => {
         //khi thanh toán xong, zalopay server sẽ POST đến url này để thông báo cho server của mình
         //Chú ý: cần dùng ngrok để public url thì Zalopay Server mới call đến được
         callback_url: 'https://movie-ticket-be.vercel.app/payments/zalopay-callback',
-        description: `CGV - Payment for the order #${orderId}`,
+        description: `LUX - Payment for the order #${orderId}`,
         bank_code: '',
     };
 
