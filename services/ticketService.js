@@ -46,5 +46,14 @@ exports.getTicketByCustomerId = async (customerId) => {
             populate: {
                 path: 'movie_id'
             }
+        })
+        .populate({
+            path: 'showtime_id',
+            populate: {
+                path: 'hall_id',
+                populate: {
+                    path: 'cinema_id'
+                }
+            }
         });
 };

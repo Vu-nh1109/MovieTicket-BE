@@ -1,9 +1,12 @@
 const PaymentModel = require('../models/payment');
+const CustomerModel = require('../models/customer');
+const ShowtimeModel = require('../models/showtime');
 const axios = require('axios');
 const CryptoJS = require('crypto-js');
 const TicketModel = require('../models/ticket');
 const SeatModel = require('../models/seat');
 const moment = require('moment');
+
 
 // Tạo thanh toán mới
 exports.createPayment = async (paymentData) => {
@@ -41,6 +44,19 @@ const config = {
 // Create Payment and Ticket
 exports.createZaloPayPayment = async (paymentDetails) => {
     const { amount, paymentMethod, returnUrl, idcustomer, idshowtime, seatsByType } = paymentDetails;
+
+    // Check if customer exists
+    const existingCustomer = await CustomerModel.findById(idcustomer);
+    if (!existingCustomer) {
+        throw new Error('Customer does not exist');
+    }
+
+    // Check if showtime exists
+    const existingShowtime = await ShowtimeModel.findById(idshowtime);
+    if (!existingShowtime) {
+        throw new Error('Showtime does not exist');
+    }
+
     const reqtime = moment().utcOffset(7).format('YYMMDDHHmmss');
     const orderId = `${moment().utcOffset(7).format('YYMMDD')}_CGV${reqtime}`; // Format orderId like YYMMDD_CGV<timestamp><customer_id> must be <40 characters
 
@@ -69,7 +85,7 @@ exports.createZaloPayPayment = async (paymentDetails) => {
         amount: amount,
         //khi thanh toán xong, zalopay server sẽ POST đến url này để thông báo cho server của mình
         //Chú ý: cần dùng ngrok để public url thì Zalopay Server mới call đến được
-        callback_url: 'https://5f70-1-55-254-227.ngrok-free.app/payments/zalopay-callback',
+        callback_url: 'https://movie-ticket-be.vercel.app/payments/zalopay-callback',
         description: `CGV - Payment for the order #${orderId}`,
         bank_code: '',
     };
@@ -105,7 +121,7 @@ exports.createZaloPayPayment = async (paymentDetails) => {
         await payment.save();
 
         return {
-            data: result.data,
+            payUrl: result.data.order_url,
             orderId
         };
     } catch (error) {

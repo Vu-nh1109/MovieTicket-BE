@@ -59,34 +59,39 @@ exports.getMovieShowtimes = async (idmovies, location, date) => {
     // Process the cinemas and showtimes
     const data = await Promise.all(
         cinemas.map(async (cinema) => {
-            const halls = await Promise.all(
-                showtimes
-                    .filter((showtime) => {
-                        const hall = showtime.hall_id;
-                        return hall && hall.cinema_id.toString() === cinema._id.toString();
-                    })
-                    .map(async (showtime) => {
-                        const totalSeats = showtime.hall_id.seats; // Directly from the populated Hall model
-                        const bookedSeats = await SeatModel.countDocuments({ showtime_id: showtime._id });
-                        const seatsAvailable = totalSeats - bookedSeats;
+            let hallMap = new Map();
 
-                        return {
-                            idhall: showtime.hall_id._id,
-                            name: showtime.hall_id.name,
-                            showtimes: [
-                                {
-                                    idshowtime: showtime._id,
-                                    start_time: showtime.start_time,
-                                    end_time: showtime.end_time,
-                                    seatsAvailable,
-                                    isAlmostFull: seatsAvailable <= totalSeats / 3,
-                                    isSoldOut: seatsAvailable === 0,
-                                }
-                            ]
-                        };
-                    })
-            );
+            const cinemaShowtimes = showtimes.filter((showtime) => {
+                const hall = showtime.hall_id;
+                return hall && hall.cinema_id.toString() === cinema._id.toString();
+            });
 
+            for (const showtime of cinemaShowtimes) {
+                const totalSeats = showtime.hall_id.seats;
+                const bookedSeats = await SeatModel.countDocuments({ showtime_id: showtime._id });
+                const seatsAvailable = totalSeats - bookedSeats;
+
+                const showTimeData = {
+                    idshowtime: showtime._id,
+                    start_time: showtime.start_time,
+                    end_time: showtime.end_time,
+                    seatsAvailable,
+                    isAlmostFull: seatsAvailable <= totalSeats / 3,
+                    isSoldOut: seatsAvailable === 0,
+                };
+
+                const hallId = showtime.hall_id._id.toString();
+                if (!hallMap.has(hallId)) {
+                    hallMap.set(hallId, {
+                        idhall: showtime.hall_id._id,
+                        name: showtime.hall_id.name,
+                        showtimes: []
+                    });
+                }
+                hallMap.get(hallId).showtimes.push(showTimeData);
+            }
+
+            const halls = Array.from(hallMap.values());
             return halls.length
                 ? { idcinema: cinema._id, name: cinema.name, address: cinema.address, halls: halls }
                 : null;

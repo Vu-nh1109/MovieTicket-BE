@@ -10,8 +10,8 @@ const movieSchema = new mongoose.Schema({
     actor: { type: [String], required: true },
     director: { type: String, required: true },
     language: { type: String, required: true },
-    rated: { type: String, required: true },
-    trailer_url: {type: String}
+    rated: { type: String, enum: ['P', 'T13', 'T16', 'T18'], required: true },
+    trailer_url: { type: String }
 });
 
 module.exports = mongoose.model('Movie', movieSchema);
