@@ -62,12 +62,12 @@ exports.loginCustomer = async ({ email, password }) => {
 
     const token = jwt.sign(
         { id: customer._id, email: customer.email, name: customer.name },
-        secretKey, 
-        { expiresIn: '7d' } 
+        secretKey,
+        { expiresIn: '7d' }
     );
 
     return {
         token,
-        customer_name: customer.name,
+        customer_name: customer.name
     };
 };
